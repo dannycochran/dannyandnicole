@@ -203,10 +203,6 @@ declare module 'instagram-web-api' {
     user: User;
   }
 
-  export interface PhotosByUsernameResponse {
-    data: PhotosByUsername;
-  }
-
   export interface InstagramParams {
     username: string;
     password: string;
@@ -223,7 +219,7 @@ declare module 'instagram-web-api' {
 
     login(): Promise<void>;
 
-    getPhotosByUsername(options: GetPhotosByUsernameOptions): Promise<PhotosByUsernameResponse>;
+    getPhotosByUsername(options: GetPhotosByUsernameOptions): Promise<PhotosByUsername>;
   }
 
   export default Instagram;
