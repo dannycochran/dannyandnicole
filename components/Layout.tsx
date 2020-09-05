@@ -23,6 +23,10 @@ const Layout = ({ children, title = 'Danny & Nicole' }: Props) => (
         <Link href="/about">
           <a>About</a>
         </Link>{' '}
+        |{' '}
+        <Link href="/stella">
+          <a>Dog photos</a>
+        </Link>{' '}
       </nav>
     </header>
     {children}
