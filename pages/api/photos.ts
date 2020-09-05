@@ -8,13 +8,19 @@ const client = new Instagram({
 });
 
 export const getPhotos = async (after?: string) => {
-  await client.login();
+  try {
+    await client.login();
 
-  return client.getPhotosByUsername({
-    username: 'stellar.pupper',
-    first: 10,
-    after: after as string,
-  });
+    return client.getPhotosByUsername({
+      username: 'stellar.pupper',
+      first: 10,
+      after: after as string,
+    });
+  } catch {
+    /* eslint-disable-next-line no-console */
+    console.error(`Failed to get photos for: ${INSTAGRAM_LOGIN}, ${INSTAGRAM_PASSWORD} `);
+    return undefined;
+  }
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
