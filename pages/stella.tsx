@@ -9,7 +9,7 @@ const imgStyle = {
 };
 
 interface StellaProps {
-  data: PhotosByUsername;
+  data?: PhotosByUsername;
 }
 
 const Stella = (props: StellaProps) => {
