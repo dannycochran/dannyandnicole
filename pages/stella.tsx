@@ -1,31 +1,62 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import Link from 'next/link';
+import { PhotosByUsername } from 'instagram-web-api';
+import Layout from '../components/Layout';
+import { getPhotos } from './api/photos';
 
 const imgStyle = {
-  width: 200,
+  width: 400,
+  margin: 10,
+};
+
+interface StellaProps {
+  data: PhotosByUsername;
 }
 
-const Stella = () => (
-  <Layout>
-    <h1>Dog photos</h1>
-    <p>These are photos of Stella</p>
-    <div style={{
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-      <img style={imgStyle} src="img/stella1.png" />
-      <img style={imgStyle} src="img/stella2.png" />
-      <img style={imgStyle} src="img/stella3.png" />
-      <img style={imgStyle} src="img/stella4.png" />
-    </div>
-    <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const Stella = (props: StellaProps) => {
+  const { data } = props;
+  const photos = data?.user?.edge_owner_to_timeline_media?.edges ?? [];
 
-export default Stella
+  return (
+    <Layout>
+      <h1>Dog photos</h1>
+      <p>These are photos of Stella</p>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}
+      >
+        {photos.map((photo) => {
+          const { node } = photo;
+
+          if (node.video_url) {
+            return (
+              <video controls style={imgStyle}>
+                <source src={node.video_url} />
+              </video>
+            );
+          }
+          return <img style={imgStyle} key={node.id} src={node.thumbnail_src} />;
+        })}
+      </div>
+      <p>
+        <Link href='/'>
+          <a>Go home</a>
+        </Link>
+      </p>
+    </Layout>
+  );
+};
+
+export default Stella;
+
+export const getServerSideProps = async (): Promise<{ props: StellaProps }> => {
+  const data = await getPhotos();
+  return {
+    props: {
+      data,
+    },
+  };
+};
