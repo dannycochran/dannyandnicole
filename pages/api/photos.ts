@@ -1,6 +1,5 @@
 import Instagram, { PhotosByUsername } from 'instagram-web-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import LRUCache from 'lru-cache';
 
 const { INSTAGRAM_LOGIN, INSTAGRAM_PASSWORD } = process.env;
 const client = new Instagram({

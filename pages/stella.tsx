@@ -22,13 +22,12 @@ const Stella = () => {
   const [data, setData] = useState<PhotosByUsername>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(true);
-  const [afterCursor, setAfterCursor] = useState(1);
   const photos = data?.user?.edge_owner_to_timeline_media?.edges ?? [];
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch(`/api/photos?first=${pageSize}&afterCursor=${afterCursor}`);
+        const response = await fetch(`/api/photos?first=${pageSize}`);
         const { data: photosData, error: photosError } = (await response.json()) as {
           data?: PhotosByUsername;
           error?: string;
@@ -46,7 +45,7 @@ const Stella = () => {
         setLoading(false);
       }
     })();
-  }, [afterCursor]);
+  }, []);
 
   return (
     <Layout>
