@@ -52,6 +52,7 @@
     "react/jsx-props-no-spreading": ["off"],
     "react/jsx-wrap-multilines": ["off"],
     "react/no-unescaped-entities": ["off"],
+    "react/no-array-index-key": ["off"],
     // TypeScript covers typing of proptypes
     "react/prop-types": ["off"],
     "react/require-default-props": ["off"],

@@ -158,7 +158,7 @@ declare module 'instagram-web-api' {
     edges: Edge5[];
   }
 
-  export interface Node {
+  export interface UserPhoto {
     __typename: string;
     id: string;
     dimensions: Dimensions;
@@ -186,7 +186,7 @@ declare module 'instagram-web-api' {
   }
 
   export interface Edge {
-    node: Node;
+    node: UserPhoto;
   }
 
   export interface EdgeOwnerToTimelineMedia {

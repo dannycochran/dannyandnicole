@@ -5,3 +5,7 @@ body {
   max-width: 1080px;
   margin: 0 auto;
 }
+
+.loader {
+  opacity: 0.4;
+}

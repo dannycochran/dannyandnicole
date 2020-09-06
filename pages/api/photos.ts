@@ -1,5 +1,6 @@
-import Instagram from 'instagram-web-api';
+import Instagram, { PhotosByUsername } from 'instagram-web-api';
 import { NextApiRequest, NextApiResponse } from 'next';
+import LRUCache from 'lru-cache';
 
 const { INSTAGRAM_LOGIN, INSTAGRAM_PASSWORD } = process.env;
 const client = new Instagram({
@@ -7,26 +8,38 @@ const client = new Instagram({
   password: INSTAGRAM_PASSWORD!,
 });
 
-export const getPhotos = async (after?: string) => {
+export interface NetworkError {
+  message: string;
+  statusCode: number;
+}
+
+export const getPhotos = async (first: number = 10, after?: string): Promise<PhotosByUsername | NetworkError> => {
   try {
     await client.login();
 
     return client.getPhotosByUsername({
       username: 'stellar.pupper',
-      first: 10,
-      after: after as string,
+      first,
+      after,
     });
-  } catch {
+  } catch (err) {
     /* eslint-disable-next-line no-console */
-    console.error(`Failed to get photos for: ${INSTAGRAM_LOGIN}, ${INSTAGRAM_PASSWORD} `);
-    return undefined;
+    console.error('Failed to get photos:', err.message);
+    return err;
   }
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { after } = req.query;
-  const data = await getPhotos(after as string);
-  res.json({ data });
+  const { first, after } = req.query;
+  const response = await getPhotos(Number(first as string), after as string);
+  if (response instanceof Error) {
+    res.setHeader('Cache-Control', 's-maxage=0, stale-while-revalidate');
+    res.statusCode = (response as NetworkError).statusCode;
+    res.json({ error: response.message });
+    return;
+  }
+  res.setHeader('Cache-Control', 's-maxage=60000, stale-while-revalidate');
+  res.json({ data: response });
 };
 
 export default handler;

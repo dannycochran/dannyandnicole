@@ -10,12 +10,17 @@
     "lint-fix": "eslint './pages/**' './components/**' --fix"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "instagram-web-api": "2.2.2",
+    "lru-cache": "^6.0.0",
     "next": "latest",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "use-hooks": "^2.0.0-rc.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.161",
+    "@types/lru-cache": "^5.1.0",
     "@types/node": "12.12.21",
     "@types/react": "16.9.16",
     "@types/react-dom": "16.9.4",
