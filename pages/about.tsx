@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { GetServerSideProps } from 'next';
 import Layout from '../components/Layout';
 
 const AboutPage = () => (
@@ -17,5 +18,21 @@ const AboutPage = () => (
     </p>
   </Layout>
 );
+
+// This function is actually executed in a node.js context, feeding through any values to "AboutPage",
+// which is the default export.
+export const getServerSideProps: GetServerSideProps = (context) => {
+  // eslint-disable-next-line
+  console.log(context.req.headers);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        props: {
+          foo: 'bar',
+        },
+      });
+    }, 2000);
+  });
+};
 
 export default AboutPage;
